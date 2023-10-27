@@ -1,0 +1,15 @@
+<!-- button_page.html -->
+{% extends 'outlay.html' %}
+{% load static %}
+<head>
+    <title>イバルのキック</title>
+</head>
+
+{% block body%}
+<body>
+    <h1>{{ lesson.title }}</h1>
+    <p>{{ lesson.text }}</p>
+
+    <a href="{% url 'stacktry:lesson_list' %}">Back to Lesson List</a>
+</body>
+{% endblock %}

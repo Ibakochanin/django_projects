@@ -1,0 +1,20 @@
+<!-- pictures/picture_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pictures</title>
+</head>
+<body>
+    <h1>Pictures</h1>
+    <ul>
+        {% for image in image_files %}
+            <li>
+                <a href="{% url 'pictures:chosen_picture' image.id %}">
+                    <img src="{{ image.url }}" alt="">
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

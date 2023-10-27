@@ -1,0 +1,702 @@
+{% extends 'outlay.html' %}
+{% load static %}
+{% load my_tags %}
+<html lang="en-JP">
+<head>
+    <title>イバルのキック</title>
+</head>
+
+    <!--
+    This website uses an MIT-licensed template.
+    License information is available in the "license/license.text" file.
+    -->
+
+
+
+{% block body %}
+{% if request.user.is_superuser %}
+<a href="{% url 'stacktry:lesson_create' %}">新しいレッスンを作る</a>
+{% endif %}
+<link href="{% static 'stacktry/timetable.css' %}" rel="stylesheet">
+<div class="container">
+                <div class="timetable-img text-center">
+                    <img src="img/content/timetable.png" alt="">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="bg-light-gray">
+                                <th class="text-uppercase">日曜</th>
+                                <th class="text-uppercase">月曜</th>
+                                <th class="text-uppercase">火曜</th>
+                                <th class="text-uppercase">水曜</th>
+                                <th class="text-uppercase">木曜</th>
+                                <th class="text-uppercase">金曜</th>
+                                <th class="text-uppercase">土曜</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% if 'Sunday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Sunday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Sunday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{% get_lesson_title 'Sunday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Sunday' 1|safe %}</div>
+                                    <div>
+                                    {% get_lesson_picture 'Sunday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Sunday' 1|safe %}</div>
+                                </td>
+                                {% if 'Monday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Monday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Monday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{% get_lesson_title 'Monday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Monday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Monday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Monday' 1|safe %}</div>
+                                </td>
+                                {% if 'Tuesday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Tuesday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Tuesday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Tuesday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Tuesday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Tuesday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Tuesday' 1|safe %}</div>
+                                </td>
+
+                                {% if 'Wednesday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Wednesday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Wednesday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Wednesday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Wednesday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Wednesday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Wednesday' 1|safe %}</div>
+                                </td>
+                                {% if 'Thursday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Thursday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Thursday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Thursday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Thursday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Thursday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Thursday' 1|safe %}</div>
+                                </td>
+                                {% if 'Friday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Friday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Friday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Friday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Friday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Friday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Friday' 1|safe %}</div>
+                                </td>
+                                {% if 'Saturday'|lesson_exists:1 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Saturday' 1 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Saturday' 1 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Saturday' 1|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Saturday' 1|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Saturday' 1 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Saturday' 1|safe %}</div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                {% if 'Sunday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Sunday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Sunday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Sunday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Sunday' 2|safe %}</div>
+                                    <div>
+                                    {% get_lesson_picture 'Sunday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Sunday' 2|safe %}</div>
+                                </td>
+                                {% if 'Monday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Monday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Monday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Monday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Monday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Monday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Monday' 2|safe %}</div>
+                                </td>
+                                {% if 'Tuesday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Tuesday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Tuesday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Tuesday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Tuesday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Tuesday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Tuesday' 2|safe %}</div>
+                                </td>
+                                {% if 'Wednesday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Wednesday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Wednesday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Wednesday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Wednesday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Wednesday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Wednesday' 2|safe %}</div>
+                                </td>
+                                {% if 'Thursday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Thursday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Thursday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Thursday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Thursday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Thursday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Thursday' 2|safe %}</div>
+                                </td>
+                                {% if 'Friday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Friday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Friday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Friday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Friday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Friday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Friday' 2|safe %}</div>
+                                </td>
+                                {% if 'Saturday'|lesson_exists:2 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Saturday' 2 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Saturday' 2 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Saturday' 2|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Saturday' 2|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Saturday' 2 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Saturday' 2|safe %}</div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                {% if 'Sunday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Sunday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Sunday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Sunday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Sunday' 3|safe %}</div>
+                                    <div>
+                                    {% get_lesson_picture 'Sunday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Sunday' 3|safe %}</div>
+                                </td>
+                                {% if 'Monday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Monday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Monday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Monday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Monday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Monday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Monday' 3|safe %}</div>
+                                </td>
+                                {% if 'Tuesday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Tuesday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Tuesday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Tuesday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Tuesday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Tuesday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Tuesday' 3|safe %}</div>
+                                </td>
+                                {% if 'Wednesday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Wednesday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Wednesday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Wednesday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Wednesday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Wednesday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Wednesday' 3|safe %}</div>
+                                </td>
+                                {% if 'Thursday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Thursday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Thursday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Thursday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Thursday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Thursday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Thursday' 3|safe %}</div>
+                                </td>
+                                {% if 'Friday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Friday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Friday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Friday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Friday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Friday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Friday' 3|safe %}</div>
+                                </td>
+                                {% if 'Saturday'|lesson_exists:3 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Saturday' 3 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Saturday' 3 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Saturday' 3|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Saturday' 3|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Saturday' 3 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Saturday' 3|safe %}</div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                {% if 'Sunday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Sunday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Sunday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Sunday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Sunday' 4|safe %}</div>
+                                    <div>
+                                    {% get_lesson_picture 'Sunday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Sunday' 4|safe %}</div>
+                                </td>
+                                {% if 'Monday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Monday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Monday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Monday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Monday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Monday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Monday' 4|safe %}</div>
+                                </td>
+                                {% if 'Tuesday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Tuesday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Tuesday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Tuesday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Tuesday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Tuesday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Tuesday' 4|safe %}</div>
+                                </td>
+                                {% if 'Wednesday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Wednesday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Wednesday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Wednesday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Wednesday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Wednesday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Wednesday' 4|safe %}</div>
+                                </td>
+                                {% if 'Thursday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Thursday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Thursday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Thursday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Thursday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Thursday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Thursday' 4|safe %}</div>
+                                </td>
+                                {% if 'Friday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Friday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Friday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Friday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Friday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Friday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Friday' 4|safe %}</div>
+                                </td>
+                                {% if 'Saturday'|lesson_exists:4 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Saturday' 4 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Saturday' 4 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Saturday' 4|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Saturday' 4|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Saturday' 4 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Saturday' 4|safe %}</div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                {% if 'Sunday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Sunday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                　　<span class="bg-{% get_lesson_color 'Sunday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Sunday' 5|safe %}</span>
+                                　　<div class="margin-10px-top font-size14">{% get_lesson_time 'Sunday' 5|safe %}</div>
+                                    <div>
+                                    {% get_lesson_picture 'Sunday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Sunday' 5|safe %}</div>
+                                </td>
+                                {% if 'Monday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Monday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Monday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Monday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Monday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Monday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Monday' 5|safe %}</div>
+                                </td>
+                                {% if 'Tuesday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Tuesday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Tuesday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Tuesday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Tuesday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Tuesday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Tuesday' 5|safe %}</div>
+                                </td>
+                                {% if 'Wednesday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Wednesday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Wednesday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Wednesday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Wednesday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Wednesday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Wednesday' 5|safe %}</div>
+                                </td>
+                                {% if 'Thursday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Thursday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Thursday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Thursday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Thursday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Thursday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Thursday' 5|safe %}</div>
+                                </td>
+                                {% if 'Friday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Friday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Friday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Friday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Friday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Friday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Friday' 5|safe %}</div>
+                                </td>
+                                {% if 'Saturday'|lesson_exists:5 %}
+                                <td style="cursor: pointer;" onclick="window.location.href='{% get_lesson_link 'Saturday' 5 %}'">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">{% get_lesson_title 'Saturday' 5|safe %}</span>
+                                    <div class="margin-10px-top font-size14">{% get_lesson_time 'Saturday' 5|safe %}</div>
+                                    <div class="font-size13 text-light-gray">
+                                    {% get_lesson_picture 'Saturday' 5 as lesson_picture_url %}
+                                    {% if lesson_picture_url %}
+                                    <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{{ lesson_picture_url }}" alt="Lesson Picture">
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div>
+                                    <div>{% get_spots_open 'Saturday' 5|safe %}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                                <td>
+                                    <span class="bg-{% get_lesson_color 'Saturday' 5 %} custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock %}
+
+
+
+
+<a href="{% url 'stacktry:lesson_list' %}" class="w-50 pl-3">
+                            <div class="card border-0 border-bottom-green shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <i class="fa fa-4x fa-list my-2"></i>
+                                    </div>
+                                    Triforce岩出
+                                </div>
+                            </div>
+                        </a>
+
+
+                        <a href="{% url 'stacktry:bjj_lesson_list' %}" class="w-50 pr-3">
+                            <div class="card border-0 border-bottom-yellow shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <i class="fa fa-hand-rock-o fa-4x my-2" aria-hidden="true"></i>
+                                    </div>
+                                    Triforce Kix
+                                </div>
+                            </div>
+                        </a>

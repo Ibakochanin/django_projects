@@ -1,0 +1,244 @@
+<!-- button_page.html -->
+<!DOCTYPE html>
+<html>
+{% extends 'outlay.html' %}
+{% load static %}
+{% load my_tags %}
+<head>
+    <title>イバルのキック</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous" defer></script>
+
+
+{% block head %}
+{% if not request.user.is_superuser %}
+<header class="masthead">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 py-5">
+                <h1 class="mb-4">{% block page_title %}Triforce岩出のスケジュールと参加ページです！{% endblock %}</h1>
+            </div>
+            <div class="col-lg-5">
+                <div class="py-5 px-4 masthead-cards">
+                    <div class="d-flex">
+                        <a {% if user.is_authenticated %} href="{% url 'stacktry:profile' user.id %}"
+                            {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:lesson_list' %}"
+                            {% endif %} class="w-50 pr-3 pb-4">
+                            <div class="card border-0 border-bottom-blue shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <i class="fa fa-user fa-4x my-2" aria-hidden="true"></i>
+                                    </div>
+                                    プロファイル
+                                </div>
+                            </div>
+                        </a>
+                        <a {% if user.is_authenticated %} href="{% url 'accounts:logout' %}?next={% url 'stacktry:lesson_list' %}"
+                                 {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:lesson_list' %}"
+                                 {% endif %} class="w-50 pl-3 pb-4">
+                            <div class="card border-0 border-bottom-blue shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <i class="fa fa-sign-in fa-4x my-2" aria-hidden="true"></i>
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                    ログアウト
+                                    {% else %}
+                                    ログイン
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="d-flex">
+                        <a href="{% url 'stacktry:bjj_lesson_list' %}" class="w-50 pr-3">
+                            <div class="card border-0 border-bottom-yellow shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <img src="{% static 'stacktry/download.jpg' %}" alt="" style="width: 120px; height: 68px;">
+                                    </div>
+                                    Triforce Kix
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'stacktry:lesson_list' %}" class="w-50 pl-3">
+                            <div class="card border-0 border-bottom-green shadow-lg shadow-hover">
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <img src="{% static 'stacktry/IWADE.png' %}" alt="" style="width: 120px; height: 68px;">
+                                    </div>
+                                    Triforce Iwade
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="shape"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <svg style="pointer-events: none" class="wave" width="100%" height="50px" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 75">
+        <defs>
+            <style>
+                .a {
+                    fill: none;
+                }
+
+                .b {
+                    clip-path: url(#a);
+                }
+
+                .c,
+                .d {
+                    fill: #f9f9fc;
+                }
+
+                .d {
+                    opacity: 0.5;
+                    isolation: isolate;
+                }
+            </style>
+            <clipPath id="a">
+                <rect class="a" width="1920" height="75"></rect>
+            </clipPath>
+        </defs>
+        <title>wave</title>
+        <g class="b">
+            <path class="c" d="M1963,327H-105V65A2647.49,2647.49,0,0,1,431,19c217.7,3.5,239.6,30.8,470,36,297.3,6.7,367.5-36.2,642-28a2511.41,2511.41,0,0,1,420,48"></path>
+        </g>
+        <g class="b">
+            <path class="d" d="M-127,404H1963V44c-140.1-28-343.3-46.7-566,22-75.5,23.3-118.5,45.9-162,64-48.6,20.2-404.7,128-784,0C355.2,97.7,341.6,78.3,235,50,86.6,10.6-41.8,6.9-127,10"></path>
+        </g>
+        <g class="b">
+            <path class="d" d="M1979,462-155,446V106C251.8,20.2,576.6,15.9,805,30c167.4,10.3,322.3,32.9,680,56,207,13.4,378,20.3,494,24"></path>
+        </g>
+        <g class="b">
+            <path class="d" d="M1998,484H-243V100c445.8,26.8,794.2-4.1,1035-39,141-20.4,231.1-40.1,378-45,349.6-11.6,636.7,73.8,828,150"></path>
+        </g>
+    </svg>
+</header>
+{% endif %}
+{% endblock %}
+
+<link href="{% static 'stacktry/timetable.css' %}" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% block body %}
+<div id="scroll-target" class="container">
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row row-with-horizontal-scroll">
+                {% if not request.user.is_superuser %}
+                <div class="col-lg-5 col-md-5 col-sm-6">
+                    <div class="white-box text-center"><img style="width:270px; height:300px; margin-top:8px; border:3px solid black;" src="{% url 'stacktry:lesson_picture' lesson.pk %}" class="img-responsive"></div>
+                </div>
+                {% endif %}
+                <div class="col-lg-7 col-md-7 col-sm-6">
+                    <h4 class="box-title mt-5">{{ lesson.title }}</h4>
+                    {{ lesson.day }}
+                    {{ lesson.school }}
+                    {{ lesson.category|safe }}
+                    {{ lesson.time|safe }}
+                    {% if not request.user.is_superuser %}
+                    {{ lesson.text|safe }}
+                    <h2> 参加する人</h2>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-primary btn-rounded border border-dark" value="参加する">
+                    </form>
+                {% endif %}
+                    <ul>
+                        {% for click in clicks %}
+                        <li>
+                            <div style="display: flex; align-items: center;">
+                            <span style="margin-right: 10px;">{{ click }}</span>
+                            {% if click.user == request.user %}
+                                <form action="{% url 'stacktry:button_delete' click.id lesson.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger btn-rounded border border-dark" value="参加消す">
+                                </form>
+                            {% elif request.user.is_superuser %}
+                                <span style="margin-right: 10px;">
+                                <form action="{% url 'stacktry:button_delete' click.id lesson.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger btn-rounded border border-dark" value="参加消す">
+                                </form>
+                                </span>
+                                <form action="{% url 'stacktry:participation_increase' lesson.pk click.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-primary btn-rounded border border-dark my-2" style="white-space: nowrap;" value="{% if lesson.category == 'Competition' %}参加した！歴：{% kick_boxing_participation_count click.user.id %}
+        {% elif lesson.category == 'Jiu Jitsu' %}
+            参加した！歴：{% jiu_jitsu_participation_count click.user.id %}
+        {% elif lesson.category == 'Free Mat' %}
+            参加した！歴：{% grappling_participation_count click.user.id %}
+        {% elif lesson.category == 'Basic' %}
+            参加した！歴：{% yoga_participation_count click.user.id %}
+        {% endif %}">
+                                </form>
+                            {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </div>
+                    </div>
+                    </ul>
+                    <h3 class="box-title mt-5">レッスンの効果</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-check text-success"></i>痩せる！</li>
+                        <li><i class="fa fa-check text-success"></i>体力増える！</li>
+                        <li><i class="fa fa-check text-success"></i>力持ちになる！</li>
+                        <li><i class="fa fa-check text-success"></i>幸せになる！</li>
+                    </ul>
+                    {% if request.user.is_superuser %}
+                    <p><a href="{% url 'stacktry:lesson_list' %}" class="btn btn-primary border border-dark">岩出スケジュール戻る</a></p>
+                    <p><a href="{% url 'stacktry:bjj_lesson_list' %}" class="btn btn-primary border border-dark">KIXスケジュール戻る</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<p></p>
+<div>
+    {% if request.user.is_superuser %}
+    <button class="btn btn-danger border border-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">レッスン削除</button>
+    {% endif %}
+</div>
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">削除の確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                本当にレッスンを削除しますか？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                <form action="{% url 'stacktry:lesson_delete' lesson.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="削除する">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function(event) {
+          var targetElement = document.getElementById("scroll-target");
+
+          if (targetElement) {
+             targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+       });
+    </script>
+{% endblock %}
+</html>

@@ -1,0 +1,125 @@
+{% extends 'outlay.html' %}
+{% load static %}
+{% load my_tags %}
+
+<head>
+    <title>イバルのキック</title>
+</head>
+
+{% block page_title %}
+{{ user}}さん
+{% endblock %}
+
+    <!--
+    This website uses an MIT-licensed template.
+    License information is available in the "license/license.text" file.
+    -->
+
+{% block body %}
+<section class="section about-section gray-bg" id="about">
+    <div id="scroll-target" class="container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">
+                            <h3 class="dark-color">{{ user }}さん</h3>
+                            <h6 class="theme-color lead">{{ user }}さんの参加歴</h6>
+                            <div class="row about-list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="counter">
+                    <div class="row">
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="500" data-speed="500">{% kick_boxing_participation_count user.id %}</h6>
+                                <p class="m-0px font-w-600">コンペ</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="150" data-speed="150">{% jiu_jitsu_participation_count user.id %}</h6>
+                                <p class="m-0px font-w-600">柔術</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="850" data-speed="850">{% grappling_participation_count user.id %}</h6>
+                                <p class="m-0px font-w-600">フリーマット</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="190" data-speed="190">{% yoga_participation_count user.id %}</h6>
+                                <p class="m-0px font-w-600">ベーシック</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% if request.user.is_superuser %}
+        <ul>
+            {% for u in users %}
+            <li>
+            <div style="display: flex; align-items: center;">
+            <a href="{% url 'stacktry:profile' user_id=u.id %}">
+            <span style="margin-right: 20px;">{{ u.username }} (ID: {{ u.id }})</span>
+            </a>
+            <div>
+                <button class="btn btn-danger btn-rounded border border-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteAccountModal{{ u.id }}">アカウントを削除する</button>
+
+                <!-- Confirmation Modal for Account Deletion -->
+                <div class="modal fade" id="confirmDeleteAccountModal{{ u.id }}" tabindex="-1" aria-labelledby="confirmDeleteAccountModalLabel{{ u.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteAccountModalLabel{{ u.id }}">アカウントの削除の確認</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                本当にこのアカウントを削除しますか？
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                                <form action="{% url 'stacktry:delete_account' pk=u.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger" value="削除する">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+  {% if request.user.is_superuser %}
+  <p>現在登録人数: {% get_customuser_count %}</p>
+  <h2>登録人数上限設定</h2>
+  <p>登録上限：{% user_limit %}</p>
+  <form method="post" action="{% url 'stacktry:set_user_limit' %}">
+    {% csrf_token %}
+    <label for="user_limit">登録上限:</label>
+    <input type="number" id="user_limit" name="user_limit" required>
+    <button type="submit">上限を設定</button>
+  </form>
+  {% endif %}
+
+
+                <script>
+                   document.addEventListener("DOMContentLoaded", function(event) {
+                      var targetElement = document.getElementById("scroll-target");
+
+                      if (targetElement) {
+                         targetElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                   });
+                </script>
+{% endblock %}

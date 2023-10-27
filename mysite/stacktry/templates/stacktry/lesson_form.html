@@ -1,0 +1,20 @@
+<!-- button_page.html -->
+{% load static %}
+<head>
+    <title>イバルのキック</title>
+</head>
+
+{% block body%}
+<body>
+    <h1>Create Lesson</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if request.user.is_superuser %}
+        <button type="submit">Save Lesson</button>
+        {% endif %}
+    </form>
+
+    <a href="{% url 'stacktry:lesson_list' %}">予約ページに戻る</a>
+</body>
+{% endblock %}
