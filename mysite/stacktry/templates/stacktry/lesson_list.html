@@ -15,6 +15,10 @@
 
 {% block body %}
 {% if request.user.is_superuser %}
+<form method="post" action="{% url 'stacktry:add_users_to_lessons' %}">
+    {% csrf_token %}
+    <button type="submit">それぞれの生徒のそれぞれの道場のレッスンすべてに入れる</button>
+</form>
 <a href="{% url 'stacktry:lesson_create' %}">新しいレッスンを作る</a>
 {% endif %}
 <link href="{% static 'stacktry/timetable.css' %}" rel="stylesheet">
@@ -650,24 +654,31 @@
 
                             <tr>
                                 <td>
+                                    日曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    月曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    火曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    水曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    木曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    金曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                                 <td>
+                                    土曜
                                     <span class="bg- custom-no-wrap padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">reservations</span>
                                 </td>
                             </tr>

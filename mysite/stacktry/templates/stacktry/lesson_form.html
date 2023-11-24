@@ -1,4 +1,4 @@
-<!-- button_page.html -->
+{% extends 'outlay.html' %}
 {% load static %}
 <head>
     <title>イバルのキック</title>
@@ -6,6 +6,7 @@
 
 {% block body%}
 <body>
+    <div id="scroll-target" class="container">
     <h1>Create Lesson</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -16,5 +17,15 @@
     </form>
 
     <a href="{% url 'stacktry:lesson_list' %}">予約ページに戻る</a>
+    </div>
 </body>
+                <script>
+                   document.addEventListener("DOMContentLoaded", function(event) {
+                      var targetElement = document.getElementById("scroll-target");
+
+                      if (targetElement) {
+                         targetElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                   });
+                </script>
 {% endblock %}

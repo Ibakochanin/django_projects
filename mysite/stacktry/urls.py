@@ -7,7 +7,8 @@ from . import views
 app_name='stacktry'
 urlpatterns = [
     path('profile/<int:user_id>/', views.ProfilePageView.as_view(), name='profile'),
-    path('lesson/list', views.LessonListView.as_view(), name='lesson_list'),
+    path('iwade_lesson/list', views.LessonListView.as_view(), name='lesson_list'),
+    path('profile/picture/<int:user_id>/', views.profile_stream_file, name='profile_picture'),
     path('button/<int:pk>/', views.ButtonPageView.as_view(), name='button_page'),
     path('button/<int:pk>/delete/<int:lesson_pk>/', views.ButtonDeleteView.as_view(success_url=reverse_lazy('stacktry:button_page')), name='button_delete'),
     path('lesson/create', views.LessonCreateView.as_view(success_url=reverse_lazy('stacktry:lesson_list')), name='lesson_create'),
@@ -16,9 +17,10 @@ urlpatterns = [
     path('lesson/<int:pk>/delete', views.LessonDeleteView.as_view(success_url=reverse_lazy('stacktry:lesson_list')), name='lesson_delete'),
     path('participation_increase/<int:pk>/<int:click_id>/', views.ParticipationIncreaseView.as_view(), name='participation_increase'),
     path('delete/<int:pk>/', views.AccountDeleteView.as_view(), name='delete_account'),
-    path('bjj_lesson/list', views.BjjLessonListView.as_view(), name='bjj_lesson_list'),
+    path('kix_lesson/list', views.BjjLessonListView.as_view(), name='bjj_lesson_list'),
     path('set-user-limit/', views.SetUserLimitView.as_view(), name='set_user_limit'),
-    path('profile_increase/<int:user_id>/', views.ProfileParticipationChangeView.as_view(), name='profile_increase'),
-
+    path('reset_monthly_counts/', views.ResetMonthlyCountsView.as_view(), name='reset_monthly_counts'),
+    path('profile/<int:user_id>/participation_count/', views.ParticipationCountView.as_view(), name='participation_count'),
+    path('add_users_to_lessons/', views.AddUsersToLessonsView.as_view(), name='add_users_to_lessons'),
 ]
 

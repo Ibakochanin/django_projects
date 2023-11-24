@@ -1,9 +1,10 @@
 from django.urls import path, reverse_lazy
 from . import views
+from django.views.generic import RedirectView
 
 app_name='ads'
 urlpatterns = [
-    path('', views.AdListView.as_view(), name='all'),
+    path('', RedirectView.as_view(url='/stacktry/iwade_lesson/list', permanent=True)),
     path('ad/<int:pk>', views.AdDetailView.as_view(), name='ad_detail'),
     path('ad/create',
         views.AdCreateView.as_view(success_url=reverse_lazy('ads:all')), name='ad_create'),

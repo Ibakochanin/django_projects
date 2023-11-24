@@ -14,6 +14,9 @@
     This website uses an MIT-licensed template.
     License information is available in the "license/license.text" file.
     -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 {% block body %}
 <section class="section about-section gray-bg" id="about">
@@ -29,44 +32,125 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                        <div class="about-avatar">
+                            <img style="width:240px;height:240px;margin-top: 8px; border:3px solid black;" {% if request.user.is_superuser %}src="{% url 'stacktry:profile_picture' user.id %}"{% else %}src="{% static 'stacktry/d776993f8ff28723afaef53353394dd6.jpg' %}"{% endif %}>
+                        </div>
+                </div>
                 <div class="counter">
                     <div class="row">
                         <div class="col-6 col-lg-3">
                             <div class="count-data text-center">
-                                <h6 class="count h2" data-to="500" data-speed="500">{% kick_boxing_participation_count user.id %}</h6>
-                                <p class="m-0px font-w-600">コンペ</p>
+                                <h6 class="count h2" data-to="500" data-speed="500">{{ user }}</h6>
+                                <p class="m-0px font-w-600">参加歴等の情報</p>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3">
                             <div class="count-data text-center">
-                                <h6 class="count h2" data-to="150" data-speed="150">{% jiu_jitsu_participation_count user.id %}</h6>
-                                <p class="m-0px font-w-600">柔術</p>
+                                <h6 class="count h2" data-to="150" data-speed="150">
+                                {% if user.belt == "White" %}
+                                    {% white_jiu_jitsu_message user.id %}
+                                {% elif user.belt == "Blue" %}
+                                    {% blue_jiu_jitsu_message user.id %}
+                                {% elif user.belt == "Purple" %}
+                                    {% purple_jiu_jitsu_message user.id %}
+                                {% elif user.belt == "Brown" %}
+                                    {% brown_jiu_jitsu_message user.id %}
+                                {% endif %}
+                                {% if user.belt == "White" %}
+                                    {% white_jiu_jitsu_participation_count user.id %}
+                                {% elif user.belt == "Blue" %}
+                                    {% blue_jiu_jitsu_participation_count user.id %}
+                                {% elif user.belt == "Purple" %}
+                                    {% purple_jiu_jitsu_participation_count user.id %}
+                                {% elif user.belt == "Brown" %}
+                                    {% brown_jiu_jitsu_participation_count user.id %}
+                                {% elif user.belt == "Black" %}
+                                    {% black_jiu_jitsu_participation_count user.id %}
+                                {% endif %}
+                                </h6>
+                                <p class="m-0px font-w-600">{{ user.belt }}:柔術</p>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3">
                             <div class="count-data text-center">
-                                <h6 class="count h2" data-to="850" data-speed="850">{% grappling_participation_count user.id %}</h6>
-                                <p class="m-0px font-w-600">フリーマット</p>
+                                <h6 class="count h2" data-to="850" data-speed="850">{% jiu_jitsu_monthly_count user.id %}</h6>
+                                <p class="m-0px font-w-600">今月柔術</p>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3">
                             <div class="count-data text-center">
-                                <h6 class="count h2" data-to="190" data-speed="190">{% yoga_participation_count user.id %}</h6>
-                                <p class="m-0px font-w-600">ベーシック</p>
+                                <h6 class="count h2" data-to="190" data-speed="190">{% total_jiu_jitsu_participation_count user.id %}</h6>
+                                <p class="m-0px font-w-600">トータル</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="counter">
+                    <div class="row">
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="500" data-speed="500">{{ user.belt }}</h6>
+                                <p class="m-0px font-w-600">帯</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="150" data-speed="150">{{ user.stripes }}</h6>
+                                <p class="m-0px font-w-600">ストライプ</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="850" data-speed="850">{{ user.member_type }}</h6>
+                                <p class="m-0px font-w-600">会員種類</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="190" data-speed="190">{{ user.gym_choice }}</h6>
+                                <p class="m-0px font-w-600">道場</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <form method="post" action="{% url 'stacktry:participation_count' user.id %}">
+            {% csrf_token %}
+            {{ participation_count_form.as_p }}
+            <button type="submit">帯事ユーザーの参加数を変える</button>
+            </form>
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_preferences_form.as_p }}
+            <button type="submit">ユーザー情報を更新</button>
+            </form>
         </section>
+        <p>Current Belt: {{ user.belt }}</p>
+        <p>Current Stripe: {{ user.stripes }}</p>
+        <p>Current Member Type: {{ user.member_type }}</p>
+        <p>Current Member Type: {{ user.gym_choice }}</p>
 
         {% if request.user.is_superuser %}
         <ul>
-            {% for u in users %}
+            {% regroup users by belt as users_by_belt %}
+            {% for belt_group in users_by_belt|dictsort:"grouper" %}
+            {% for u in belt_group.list %}
             <li>
             <div style="display: flex; align-items: center;">
-            <a href="{% url 'stacktry:profile' user_id=u.id %}">
-            <span style="margin-right: 20px;">{{ u.username }} (ID: {{ u.id }})</span>
+            <a href="{% url 'stacktry:profile' user_id=u.id %}" style="text-decoration: none;">
+            <span style="margin-right: 20px; color:
+    {% if u.belt == 'White' %} white; text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    {% elif u.belt == 'Blue' %} blue; font-weight: bold;
+    {% elif u.belt == 'Purple' %} purple; font-weight: bold;
+    {% elif u.belt == 'Brown' %} brown; font-weight: bold;
+    {% elif u.belt == 'Black' %} black; font-weight: bold;
+    {% else %} default_color; {% endif %}">
+                <img style="width:64px;height:64px;margin-top: 8px; border:3px solid black;" {% if request.user.is_superuser %}src="{% url 'stacktry:profile_picture' u.id %}"{% else %}src="{% static 'stacktry/32fb4d73a44991984a007252e99f93c7.jpg' %}"{% endif %}>
+                <span>{{ u.username }} (帯：{{ u.belt }}) (ストライプ：{{ u.stripes }}) (会員種類：{{ u.member_type }}) (道場：{{ u.gym_choice }})
+                </span>
+            (今月参加：{% jiu_jitsu_monthly_count u.id %})
+            </span>
             </a>
             <div>
                 <button class="btn btn-danger btn-rounded border border-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteAccountModal{{ u.id }}">アカウントを削除する</button>
@@ -97,6 +181,7 @@
             </div>
             </li>
             {% endfor %}
+            {% endfor %}
         </ul>
         {% endif %}
     </div>
@@ -112,6 +197,11 @@
   </form>
   {% endif %}
 
+  {% if request.user.is_superuser %}
+  <form method="get" action="{% url 'stacktry:reset_monthly_counts' %}">
+    <button type="submit" class="btn btn-danger btn-rounded border border-dark">毎月参加リセット</button>
+  </form>
+  {% endif %}
 
                 <script>
                    document.addEventListener("DOMContentLoaded", function(event) {

@@ -23,13 +23,13 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7 py-5">
-                <h1 class="mb-4">{% block page_title %}Triforce岩出のスケジュールと予約ページです！{% endblock %}</h1>
+                <h1 class="mb-4">{% block page_title %}Triforce岩出のスケジュールと参加ページです！{% endblock %}</h1>
             </div>
             <div class="col-lg-5">
                 <div class="py-5 px-4 masthead-cards">
                     <div class="d-flex">
                         <a {% if user.is_authenticated %} href="{% url 'stacktry:profile' user.id %}"
-                            {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:lesson_list' %}"
+                            {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:bjj_lesson_list' %}"
                             {% endif %} class="w-50 pr-3 pb-4">
                             <div class="card border-0 border-bottom-blue shadow-lg shadow-hover">
                                 <div class="card-body text-center">
@@ -40,8 +40,8 @@
                                 </div>
                             </div>
                         </a>
-                        <a {% if user.is_authenticated %} href="{% url 'accounts:logout' %}?next={% url 'accounts:login' %}?next={% url 'stacktry:lesson_list' %}"
-                                 {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:lesson_list' %}"
+                        <a {% if user.is_authenticated %} href="{% url 'accounts:logout' %}?next={% url 'accounts:login' %}?next={% url 'stacktry:bjj_lesson_list' %}"
+                                 {% else %} href="{% url 'accounts:login' %}?next={% url 'stacktry:bjj_lesson_list' %}"
                                  {% endif %} class="w-50 pl-3 pb-4">
                             <div class="card border-0 border-bottom-blue shadow-lg shadow-hover">
                                 <div class="card-body text-center">

@@ -5,12 +5,17 @@ from stacktry.models import Click, Lesson, ParticipationCount
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 from accounts.models import CustomUser
+from django.http import JsonResponse
+from django.utils import timezone
+from django.core import serializers
+from django.db.models import Sum
 
 
 
 
 
-from stacktry.forms import CreateForm, ParticipationCountForm
+
+from stacktry.forms import CreateForm, UserPreferencesForm, ParticipationCountForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from stacktry.owner import OwnerDeleteView, OwnerDetailView, OwnerListView
 from django.shortcuts import get_object_or_404
@@ -38,10 +43,15 @@ class ProfilePageView(View):
     model = CustomUser
     template_name = 'stacktry/profile.html'
 
+
     def get(self, request, user_id):
         user = get_object_or_404(CustomUser, id=user_id)
         users = CustomUser.objects.all()
-        return render(request, self.template_name, {'user': user, 'users': users})
+
+        user_preferences_form = UserPreferencesForm(instance=user)
+        participation_count, _ = ParticipationCount.objects.get_or_create(user=user, jiu_jitsu_count=0, lesson=None)
+        participation_count_form = ParticipationCountForm(instance=participation_count)
+        return render(request, self.template_name, {'user': user, 'users': users, 'user_preferences_form': user_preferences_form, 'participation_count_form': participation_count_form})
 
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
@@ -53,20 +63,132 @@ class ProfilePageView(View):
         context['user_id'] = user_id
         return context
 
-class ProfileParticipationChangeView(View):
+    def post(self, request, user_id):
+        user = get_object_or_404(CustomUser, id=user_id)
+        users = CustomUser.objects.all()
+
+        user_preferences_form = UserPreferencesForm(request.POST, request.FILES or None, instance=user)
+        participation_count, _ = ParticipationCount.objects.get_or_create(user=user, jiu_jitsu_count=0, lesson=None)
+        participation_count_form = ParticipationCountForm(request.POST, instance=participation_count)
+
+        if user_preferences_form.is_valid():
+            user_preferences_form.save()
+
+        if participation_count_form.is_valid():
+            participation_count_form.save()
+
+
+            return redirect('stacktry:profile', user_id=user.id)
+        else:
+            return render(request, self.template_name, {
+                'user': user,
+                'users': users,
+                'user_preferences_form': user_preferences_form,
+                'participation_count_form': participation_count_form,
+            })
+
+
+
+def profile_stream_file(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    response = HttpResponse()
+    response['Content-Type'] = user.content_type
+    response['Content-Length'] = len(user.profile_picture)
+    response.write(user.profile_picture)
+    return response
+
+
+
+class ParticipationCountView(View):
     template_name = 'stacktry/profile.html'
+
+    def get(self, request, user_id):
+        user = get_object_or_404(CustomUser, id=user_id)
+
+        # Get or create ParticipationCount instance for the user
+        participation_count = ParticipationCount.objects.filter(user=user)
+
+        form = ParticipationCountForm()  # No instance argument for GET requests
+        return render(request, self.template_name, {'user': user, 'form': form, 'participation_count': participation_count})
+
 
     def post(self, request, user_id):
         user = get_object_or_404(CustomUser, id=user_id)
-        participation_count = get_object_or_404(ParticipationCount, user=user)
-        form = ParticipationCountForm(request.POST, instance=participation_count)
-        if form.is_valid():
-            form.save()  # Save the form data to the model
-            return HttpResponseRedirect(reverse('stacktry:profile', args=[user_id]))
 
-        # If the form is not valid, re-render the page with error messages
-        users = CustomUser.objects.all()
-        return render(request, self.template_name, {'user': user, 'users': users, 'form': form})
+    # Get or create ParticipationCount instance for the user
+        ParticipationCount.objects.filter(user=user).delete()
+        participation_count = ParticipationCount.objects.create(user=user)
+
+        form = ParticipationCountForm(request.POST, instance=participation_count)
+
+        if form.is_valid():
+        # Update the jiu_jitsu_count field in the participation_count instance
+
+
+        # Save the updated instance
+            participation_count.save()
+
+        # Redirect to the same page where the form was submitted
+            success_url = reverse('stacktry:profile', kwargs={'user_id': participation_count.user.id})
+            return redirect(success_url)
+        else:
+            return render(request, self.template_name, {'user': user, 'form': form, 'participation_count': participation_count})
+
+
+
+
+
+
+class AddUsersToLessonsView(View):
+    template_name = 'stacktry/bjj_lesson_list.html'
+
+    def post(self, request, *args, **kwargs):
+        # Your logic to add users to lessons based on gym_choice and school
+        kix_users = CustomUser.objects.filter(gym_choice='Kix')
+        iwade_users = CustomUser.objects.filter(gym_choice='Iwade')
+        both_users = CustomUser.objects.filter(gym_choice='Both')
+
+        kix_lessons = Lesson.objects.filter(school='Kix')
+        iwade_lessons = Lesson.objects.filter(school='Iwade')
+
+        # Add Kix users to Kix lessons
+        for user in kix_users:
+            for lesson in kix_lessons:
+                Click.objects.get_or_create(user=user, lesson=lesson)
+
+        # Add Iwade users to Iwade lessons
+        for user in iwade_users:
+            for lesson in iwade_lessons:
+                Click.objects.get_or_create(user=user, lesson=lesson)
+
+        # Add Both users to Both Kix and Iwade lessons
+        for user in both_users:
+            for lesson in kix_lessons:
+                Click.objects.get_or_create(user=user, lesson=lesson)
+
+            for lesson in iwade_lessons:
+                Click.objects.get_or_create(user=user, lesson=lesson)
+
+        return HttpResponseRedirect(reverse('stacktry:bjj_lesson_list'))
+
+
+
+class ResetMonthlyCountsView(View):
+    def get(self, request):
+        # Reset monthly counts for all users
+        all_users = CustomUser.objects.all()  # Get all users from your user model
+        for user in all_users:
+            participation_counts = ParticipationCount.objects.filter(user=user)
+            for count in participation_counts:
+                count.monthly_count_j = 0
+                count.monthly_count_f = 0
+                count.monthly_count_b = 0
+                count.monthly_count_c = 0
+                count.save()
+
+        return HttpResponseRedirect(reverse('stacktry:lesson_list'))
+
+
 
 
 
@@ -191,7 +313,6 @@ class ParticipationIncreaseView(LoginRequiredMixin, View):
         lesson = Lesson.objects.get(pk=pk)
         click = Click.objects.get(pk=click_id, lesson=lesson)
         user = click.user
-        category=lesson.category
 
         participation_count, created = ParticipationCount.objects.get_or_create(
             user=user,
@@ -199,21 +320,52 @@ class ParticipationIncreaseView(LoginRequiredMixin, View):
         )
 
         # Increment the appropriate participation count field for the user
-        if  category == 'Jiu Jitsu':
-            participation_count.jiu_jitsu_count += 1
-        elif category == 'Free Mat':
-            participation_count.grappling_count += 1
-        elif category == 'Competition':
-            participation_count.kick_boxing_count += 1
-        elif category == 'Basic':
-            participation_count.yoga_count += 1
+
+        participation_count.monthly_count_j += 1
+
+        if user.belt == 'White':
+            participation_count.white_jiu_jitsu_count += 1
+        elif user.belt == 'Blue':
+            participation_count.blue_jiu_jitsu_count += 1
+        elif user.belt == 'Purple':
+            participation_count.purple_jiu_jitsu_count += 1
+        elif user.belt == 'Brown':
+            participation_count.brown_jiu_jitsu_count += 1
+        elif user.belt == 'Black':
+            participation_count.black_jiu_jitsu_count += 1
+
 
         # Save the participation count object to update the count
         participation_count.save()
 
-        # Redirect back to the lesson page
-        return HttpResponseRedirect(reverse('stacktry:button_page', args=[pk]))
+        click.order = timezone.now()
+        click.timestamp = timezone.now()
+        click.save()
 
+        clicks = Click.objects.filter(lesson=lesson, user=user).order_by('-order')
+
+        # Serialize the queryset to JSON
+        clicks_json = serializers.serialize('json', clicks)
+
+
+        response_data = {
+            'user_id': user.id,
+            'click_id': click.id,
+            'timestamp': click.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+            'updated_counts': {
+                'monthly_count_j':  participation_count.monthly_count_j,
+                'jiu_jitsu_count': participation_count.jiu_jitsu_count,
+                'white_jiu_jitsu_count': participation_count.white_jiu_jitsu_count,
+                'blue_jiu_jitsu_count': participation_count.blue_jiu_jitsu_count,
+                'purple_jiu_jitsu_count': participation_count.purple_jiu_jitsu_count,
+                'brown_jiu_jitsu_count': participation_count.brown_jiu_jitsu_count,
+                'black_jiu_jitsu_count': participation_count.black_jiu_jitsu_count,
+            },
+            'clicks': clicks_json,
+        }
+
+        # Redirect back to the lesson page
+        return JsonResponse(response_data)
 
 
 class ButtonDeleteView(OwnerDeleteView):
